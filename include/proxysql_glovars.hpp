@@ -88,6 +88,9 @@ class ProxySQL_GlobalVariables {
 #ifdef SO_REUSEPORT
 		bool reuseport;
 #endif /* SO_REUSEPORT */
+#ifdef SYSTEMD
+		bool sdnotify;
+#endif
 #ifdef IDLE_THREADS
 		bool idle_threads;
 #endif /* IDLE_THREADS */

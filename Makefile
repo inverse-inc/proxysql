@@ -57,11 +57,6 @@ endif
 
 export MAKEOPT=-j ${NPROCS}
 
-ifeq ($(wildcard /usr/lib/systemd/system), /usr/lib/systemd/system)
-	SYSTEMD=1
-else
-	SYSTEMD=0
-endif
 USERCHECK := $(shell getent passwd proxysql)
 GROUPCHECK := $(shell getent group proxysql)
 

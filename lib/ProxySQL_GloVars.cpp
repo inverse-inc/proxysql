@@ -142,6 +142,9 @@ ProxySQL_GlobalVariables::ProxySQL_GlobalVariables() :
 	opt->add((const char *)"",0,0,0,(const char *)"Starts only the admin service",(const char *)"-n",(const char *)"--no-start");
 	opt->add((const char *)"",0,0,0,(const char *)"Do not start Monitor Module",(const char *)"-M",(const char *)"--no-monitor");
 	opt->add((const char *)"",0,0,0,(const char *)"Run in foreground",(const char *)"-f",(const char *)"--foreground");
+#ifdef SYSTEMD
+	opt->add((const char *)"",0,0,0,(const char *)"Notify systemd on start and stop",(const char *)"--sdnotify");
+#endif
 #ifdef SO_REUSEPORT
 	opt->add((const char *)"",0,0,0,(const char *)"Use SO_REUSEPORT",(const char *)"-r",(const char *)"--reuseport");
 #endif /* SO_REUSEPORT */
@@ -323,6 +326,12 @@ void ProxySQL_GlobalVariables::process_opts_post() {
 		global.reuseport=true;
 	}
 #endif /* SO_REUSEPORT */
+
+#ifdef SYSTEMD
+	if (opt->isSet("--sdnotify")) {
+		global.sdnotify=true;
+	}
+#endif /*SYSTEMD*/
 
 	if (opt->isSet("-S")) {
 		std::string admin_socket;

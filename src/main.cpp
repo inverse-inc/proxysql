@@ -8,6 +8,10 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+#ifdef SYSTEMD
+#include <systemd/sd-daemon.h>
+#endif
+
 //#define PROXYSQL_EXTERN
 #include "cpp.h"
 
@@ -1520,6 +1524,12 @@ __start_label:
 	proxy_info("For online documentation visit: https://proxysql.com/documentation/\n");
 	proxy_info("For support visit: https://proxysql.com/services/support/\n");
 	proxy_info("For consultancy visit: https://proxysql.com/services/consulting/\n");
+#ifdef SYSTEMD
+	if (GloVars.global.sdnotify==true)  {
+		sd_notifyf(0, "READY=1\n"
+		"STATUS=ProxySQL is now processing requests...");
+	}
+#endif
 
 	{
 		unsigned int missed_heartbeats = 0;
@@ -1615,6 +1625,12 @@ __start_label:
 	}
 
 __shutdown:
+
+#ifdef SYSTEMD
+	if (GloVars.global.sdnotify==true)  {
+		sd_notify(0, "STOPPING=1");
+	}
+#endif
 
 	proxy_info("Starting shutdown...\n");
 
