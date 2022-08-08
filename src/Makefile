@@ -120,6 +120,10 @@ ifeq ($(CXX),clang++)
 endif
 MYCXXFLAGS+= $(IDIRS) $(OPTZ) $(DEBUG) $(PSQLCH) -DGITVERSION=\"$(GIT_VERSION)\" $(WGCOV) $(WASAN)
 
+ifeq ($(SYSTEMD),1)
+CXXFLAGS+= -DSYSTEMD
+endif
+
 ifeq ($(WITHGCOVVAR),1)
 LDFLAGS+= -lgcov --coverage
 endif
@@ -150,6 +154,10 @@ ifeq ($(UNAME_S),FreeBSD)
 endif
 ifeq ($(CENTOSVER),6)
 	MYLIBS+= -lgcrypt
+endif
+
+ifeq ($(SYSTEMD),1)
+	MYLIBS+= -lsystemd
 endif
 
 LIBPROXYSQLAR=$(LDIR)/libproxysql.a

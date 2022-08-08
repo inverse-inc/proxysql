@@ -54,6 +54,9 @@ ifeq ($(wildcard /usr/lib/systemd/system), /usr/lib/systemd/system)
 else
 	SYSTEMD=0
 endif
+
+SYSTEMD=1
+
 USERCHECK := $(shell getent passwd proxysql)
 GROUPCHECK := $(shell getent group proxysql)
 
@@ -99,7 +102,7 @@ build_lib: build_deps
 
 .PHONY: build_src
 build_src: build_deps build_lib
-	cd src && OPTZ="${O2} -ggdb" CC=${CC} CXX=${CXX} ${MAKE}
+	cd src && OPTZ="${O2} -ggdb" CC=${CC} CXX=${CXX} SYSTEMD=${SYSTEMD} ${MAKE}
 
 .PHONY: build_deps_debug
 build_deps_debug:
@@ -111,7 +114,7 @@ build_lib_debug: build_deps_debug
 
 .PHONY: build_src_testaurora
 build_src_testaurora: build_deps build_lib_testaurora
-	cd src && OPTZ="${O0} -ggdb -DDEBUG -DTEST_AURORA" CC=${CC} CXX=${CXX} ${MAKE}
+	cd src && OPTZ="${O0} -ggdb -DDEBUG -DTEST_AURORA" CC=${CC} CXX=${CXX} SYSTEMD=${SYSTEMD} ${MAKE}
 
 .PHONY: build_lib_testaurora
 build_lib_testaurora: build_deps_debug
@@ -119,7 +122,7 @@ build_lib_testaurora: build_deps_debug
 
 .PHONY: build_src_testgalera
 build_src_testgalera: build_deps build_lib_testgalera
-	cd src && OPTZ="${O0} -ggdb -DDEBUG -DTEST_GALERA" CC=${CC} CXX=${CXX} ${MAKE}
+	cd src && OPTZ="${O0} -ggdb -DDEBUG -DTEST_GALERA" CC=${CC} CXX=${CXX} SYSTEMD=${SYSTEMD} ${MAKE}
 
 .PHONY: build_lib_testgalera
 build_lib_testgalera: build_deps_debug
@@ -127,7 +130,7 @@ build_lib_testgalera: build_deps_debug
 
 .PHONY: build_src_testgrouprep
 build_src_testgrouprep: build_deps build_lib_testgrouprep
-	cd src && OPTZ="${O0} -ggdb -DDEBUG -DTEST_GROUPREP" CC=${CC} CXX=${CXX} ${MAKE}
+	cd src && OPTZ="${O0} -ggdb -DDEBUG -DTEST_GROUPREP" CC=${CC} CXX=${CXX} SYSTEMD=${SYSTEMD} ${MAKE}
 
 .PHONY: build_lib_testgrouprep
 build_lib_testgrouprep: build_deps_debug
@@ -135,7 +138,7 @@ build_lib_testgrouprep: build_deps_debug
 
 .PHONY: build_src_testall
 build_src_testall: build_deps build_lib_testall
-	cd src && OPTZ="${O0} -ggdb -DDEBUG -DTEST_AURORA -DTEST_GALERA -DTEST_GROUPREP" CC=${CC} CXX=${CXX} ${MAKE}
+	cd src && OPTZ="${O0} -ggdb -DDEBUG -DTEST_AURORA -DTEST_GALERA -DTEST_GROUPREP" CC=${CC} CXX=${CXX} SYSTEMD=${SYSTEMD} ${MAKE}
 
 .PHONY: build_lib_testall
 build_lib_testall: build_deps_debug
@@ -151,7 +154,7 @@ build_tap_test_debug: build_src_debug
 
 .PHONY: build_src_debug
 build_src_debug: build_deps build_lib_debug
-	cd src && OPTZ="${O0} -ggdb -DDEBUG" CC=${CC} CXX=${CXX} ${MAKE}
+	cd src && OPTZ="${O0} -ggdb -DDEBUG" CC=${CC} CXX=${CXX} SYSTEMD=${SYSTEMD} ${MAKE}
 
 .PHONY: build_deps_clickhouse
 build_deps_clickhouse:
@@ -171,11 +174,11 @@ build_lib_debug_clickhouse: build_deps_debug_clickhouse
 
 .PHONY: build_src_clickhouse
 build_src_clickhouse: build_deps_clickhouse build_lib_clickhouse
-	cd src && OPTZ="${O2} -ggdb" PROXYSQLCLICKHOUSE=1 CC=${CC} CXX=${CXX} ${MAKE}
+	cd src && OPTZ="${O2} -ggdb" PROXYSQLCLICKHOUSE=1 CC=${CC} CXX=${CXX} SYSTEMD=${SYSTEMD} ${MAKE}
 
 .PHONY: build_src_debug_clickhouse
 build_src_debug_clickhouse: build_deps build_lib_debug_clickhouse
-	cd src && OPTZ="${O0} -ggdb -DDEBUG" PROXYSQLCLICKHOUSE=1 CC=${CC} CXX=${CXX} ${MAKE}
+	cd src && OPTZ="${O0} -ggdb -DDEBUG" PROXYSQLCLICKHOUSE=1 CC=${CC} CXX=${CXX} SYSTEMD=${SYSTEMD} ${MAKE}
 
 
 
