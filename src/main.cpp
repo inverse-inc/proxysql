@@ -8,6 +8,10 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+#ifdef SYSTEMD
+#include <systemd/sd-daemon.h>
+#endif
+
 //#define PROXYSQL_EXTERN
 #include "cpp.h"
 
@@ -1430,6 +1434,11 @@ int main(int argc, const char * argv[]) {
 
 		} else if (pid) { /* The parent */
 
+#ifdef SYSTEMD
+			proxy_info("Systemd sd_notify enabled\n");
+			sd_notifyf(0, "READY=1\n"
+			"STATUS=ProxySQL is now processing requests...");
+#endif
 			ProxySQL_daemonize_wait_daemon();
 
 		} else { /* The daemon */
@@ -1490,6 +1499,11 @@ gotofork:
 
 	} else {
 		GloAdmin->flush_error_log();
+#ifdef SYSTEMD
+		proxy_info("Systemd sd_notify enabled\n");
+		sd_notifyf(0, "READY=1\n"
+		"STATUS=ProxySQL is now processing requests...");
+#endif
 		GloVars.install_signal_handler();
 	}
 
@@ -1615,6 +1629,10 @@ __start_label:
 	}
 
 __shutdown:
+
+#ifdef SYSTEMD
+	sd_notify(0, "STOPPING=1");
+#endif
 
 	proxy_info("Starting shutdown...\n");
 
