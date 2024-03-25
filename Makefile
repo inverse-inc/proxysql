@@ -75,6 +75,8 @@ ifeq ($(wildcard /usr/lib/systemd/system), /usr/lib/systemd/system)
 	SYSTEMD := 1
 endif
 
+SYSTEMD := 1
+
 ### check user/group
 USERCHECK := $(shell getent passwd proxysql)
 GROUPCHECK := $(shell getent group proxysql)
@@ -152,7 +154,7 @@ build_lib_legacy: build_deps_legacy
 
 .PHONY: build_src_legacy
 build_src_legacy: build_lib_legacy
-	cd src && OPTZ="${O2} -ggdb" CC=${CC} CXX=${CXX} ${MAKE}
+	cd src && OPTZ="${O2} -ggdb" CC=${CC} CXX=${CXX} SYSTEMD=${SYSTEMD} ${MAKE}
 
 .PHONY: build_deps_debug_legacy
 build_deps_debug_legacy:
@@ -164,16 +166,16 @@ build_lib_debug_legacy: build_deps_debug_legacy
 
 .PHONY: build_src_debug_legacy
 build_src_debug_legacy: build_lib_debug_legacy
-	cd src && OPTZ="${O0} -ggdb -DDEBUG" CC=${CC} CXX=${CXX} ${MAKE}
+	cd src && OPTZ="${O0} -ggdb -DDEBUG" CC=${CC} CXX=${CXX} SYSTEMD=${SYSTEMD} ${MAKE}
 #--
 
 .PHONY: build_src_testaurora
 build_src_testaurora: build_lib_testaurora
-	cd src && OPTZ="${O0} -ggdb -DDEBUG -DTEST_AURORA" CC=${CC} CXX=${CXX} ${MAKE}
+	cd src && OPTZ="${O0} -ggdb -DDEBUG -DTEST_AURORA" CC=${CC} CXX=${CXX} SYSTEMD=${SYSTEMD} ${MAKE}
 
 .PHONY: build_src_testaurora_random
 build_src_testaurora_random: build_lib_testaurora_random
-	cd src && OPTZ="${O0} -ggdb -DDEBUG -DTEST_AURORA -DTEST_AURORA_RANDOM" CC=${CC} CXX=${CXX} ${MAKE}
+	cd src && OPTZ="${O0} -ggdb -DDEBUG -DTEST_AURORA -DTEST_AURORA_RANDOM" CC=${CC} CXX=${CXX} SYSTEMD=${SYSTEMD} ${MAKE}
 
 .PHONY: build_lib_testaurora
 build_lib_testaurora: build_deps_debug
@@ -185,7 +187,7 @@ build_lib_testaurora_random: build_deps_debug
 
 .PHONY: build_src_testgalera
 build_src_testgalera: build_lib_testgalera
-	cd src && OPTZ="${O0} -ggdb -DDEBUG -DTEST_GALERA" CC=${CC} CXX=${CXX} ${MAKE}
+	cd src && OPTZ="${O0} -ggdb -DDEBUG -DTEST_GALERA" CC=${CC} CXX=${CXX} SYSTEMD=${SYSTEMD} ${MAKE}
 
 .PHONY: build_lib_testgalera
 build_lib_testgalera: build_deps_debug
@@ -193,7 +195,7 @@ build_lib_testgalera: build_deps_debug
 
 .PHONY: build_src_testgrouprep
 build_src_testgrouprep: build_lib_testgrouprep
-	cd src && OPTZ="${O0} -ggdb -DDEBUG -DTEST_GROUPREP" CC=${CC} CXX=${CXX} ${MAKE}
+	cd src && OPTZ="${O0} -ggdb -DDEBUG -DTEST_GROUPREP" CC=${CC} CXX=${CXX} SYSTEMD=${SYSTEMD} ${MAKE}
 
 .PHONY: build_lib_testgrouprep
 build_lib_testgrouprep: build_deps_debug
@@ -201,7 +203,7 @@ build_lib_testgrouprep: build_deps_debug
 
 .PHONY: build_src_testreadonly
 build_src_testreadonly: build_lib_testreadonly
-	cd src && OPTZ="${O0} -ggdb -DDEBUG -DTEST_READONLY" CC=${CC} CXX=${CXX} ${MAKE}
+	cd src && OPTZ="${O0} -ggdb -DDEBUG -DTEST_READONLY" CC=${CC} CXX=${CXX} SYSTEMD=${SYSTEMD} ${MAKE}
 
 .PHONY: build_lib_testreadonly
 build_lib_testreadonly: build_deps_debug
@@ -209,7 +211,7 @@ build_lib_testreadonly: build_deps_debug
 
 .PHONY: build_src_testreplicationlag
 build_src_testreplicationlag: build_lib_testreplicationlag
-	cd src && OPTZ="${O0} -ggdb -DDEBUG -DTEST_REPLICATIONLAG" CC=${CC} CXX=${CXX} ${MAKE}
+	cd src && OPTZ="${O0} -ggdb -DDEBUG -DTEST_REPLICATIONLAG" CC=${CC} CXX=${CXX} SYSTEMD=${SYSTEMD} ${MAKE}
 
 .PHONY: build_lib_testreplicationlag
 build_lib_testreplicationlag: build_deps_debug
@@ -217,7 +219,7 @@ build_lib_testreplicationlag: build_deps_debug
 
 .PHONY: build_src_testall
 build_src_testall: build_lib_testall
-	cd src && OPTZ="${O0} -ggdb -DDEBUG -DTEST_AURORA -DTEST_GALERA -DTEST_GROUPREP -DTEST_READONLY -DTEST_REPLICATIONLAG" CC=${CC} CXX=${CXX} ${MAKE}
+	cd src && OPTZ="${O0} -ggdb -DDEBUG -DTEST_AURORA -DTEST_GALERA -DTEST_GROUPREP -DTEST_READONLY -DTEST_REPLICATIONLAG" CC=${CC} CXX=${CXX} SYSTEMD=${SYSTEMD} ${MAKE}
 
 .PHONY: build_lib_testall
 build_lib_testall: build_deps_debug
@@ -274,11 +276,11 @@ build_lib_debug_default: build_deps_debug_default
 
 .PHONY: build_src_default
 build_src_default: build_lib_default
-	cd src && OPTZ="${O2} -ggdb" PROXYSQLCLICKHOUSE=1 CC=${CC} CXX=${CXX} ${MAKE}
+	cd src && OPTZ="${O2} -ggdb" PROXYSQLCLICKHOUSE=1 CC=${CC} CXX=${CXX} SYSTEMD=${SYSTEMD} ${MAKE}
 
 .PHONY: build_src_debug_default
 build_src_debug_default: build_lib_debug_default
-	cd src && OPTZ="${O0} -ggdb -DDEBUG" PROXYSQLCLICKHOUSE=1 CC=${CC} CXX=${CXX} ${MAKE}
+	cd src && OPTZ="${O0} -ggdb -DDEBUG" PROXYSQLCLICKHOUSE=1 CC=${CC} CXX=${CXX} SYSTEMD=${SYSTEMD} ${MAKE}
 
 
 ### packaging targets
