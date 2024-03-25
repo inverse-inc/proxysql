@@ -78,6 +78,9 @@ ifeq ($(CXX),clang++)
 endif
 MYCXXFLAGS += $(IDIRS) $(OPTZ) $(DEBUG) $(PSQLCH) -DGITVERSION=\"$(GIT_VERSION)\" $(NOJEM) $(WGCOV) $(WASAN)
 
+ifeq ($(SYSTEMD),1)
+	CXXFLAGS+= -DSYSTEMD
+endif
 
 STATICMYLIBS := -Wl,-Bstatic \
 				-lconfig \
@@ -128,6 +131,10 @@ ifeq ($(UNAME_S),FreeBSD)
 endif
 ifeq ($(CENTOSVER),6)
 	MYLIBS += -lgcrypt
+endif
+
+ifeq ($(SYSTEMD),1)
+	MYLIBS+= -lsystemd
 endif
 
 LIBPROXYSQLAR := $(PROXYSQL_LDIR)/libproxysql.a
