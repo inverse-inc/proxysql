@@ -69,6 +69,7 @@ oldcode/tests/connect_speed
 src/proxysql
 src/*pem
 binaries/*deb
+docker/local_builder/*deb
 binaries/*rpm
 tools/eventslog_reader_sample
 tools/eventlog_reader_to_json
