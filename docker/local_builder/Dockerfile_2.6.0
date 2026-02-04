@@ -15,25 +15,25 @@ ENV PKG_RELEASE=debian12
 ENV PROXYSQL_BUILD_TYPE=clickhouse
 ENV BLD_NAME=proxysql
 ENV CC=cc
-ENV CXX=g++     
-                                                   
+ENV CXX=g++
+
 ARG DEBIAN_FRONTEND=noninteractive
-                                                   
+
 # Install build dependencies
-                                                   
-RUN apt-get update && apt-get install -y \                                                            
-        automake \                                                                                    
+
+RUN apt-get update && apt-get install -y \
+        automake \
         equivs \
         cmake \
-        make \                         
+        make \
         g++ \
-        gcc \                                 
+        gcc \
         gdb \
-        gdbserver \                                                                                   
-        git \                                                                                         
+        gdbserver \
+        git \
         libgnutls28-dev \
         libmariadb-dev \
-        libssl-dev \                                                                                  
+        libssl-dev \
         libtool \
         gawk \
         bzip2 \
